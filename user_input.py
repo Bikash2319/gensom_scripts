@@ -22,7 +22,7 @@ vt_checkbox = 1
 #-------------------------Vendor Management--------------------------
 vendor_name = 'Solis Inverter Provider'
 contact_person = 'Bikash'
-landline_number = '06742120282'
+landline_number = '0674212028'
 contact_number = '+918569741301'
 vendor_email_id = 'bikashsahoo@gmail.com'
 comm_add = 'Noida, Uttar Pradesh, 201304'
@@ -40,3 +40,22 @@ latitude = "65.55"
 longitude = "112.52"
 warehouse_address = "Barakhamba, Delhi, India 110033"
 
+#-----------------------Inventory------------------------------
+inventory_name = 'Test Inventory'
+serial_no = '123456'
+reorder_point = '1'
+quantity = '100'
+po_number = '12345ASDFG'
+
+#-----------------------Project Management----------------------
+plant_name = 'Testing Project 1'
+s_name = 'TP01'
+p_add = "Barakhamba, Delhi, India 110033"
+p_lat = '52.36'
+p_long = '122.52'
+tilt = '5.33'
+ac_cap = '5000'
+dc_cap = '6000'
+comm_date = '11-01-1999'
+start_time = '05:00'
+end_time = '19:00'

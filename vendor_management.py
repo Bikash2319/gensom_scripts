@@ -1,21 +1,7 @@
 from initialize import *
 from user_input import *
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
-chrome_options = Options()
-service = Service(executable_path="C:\Program Files\Python313\Scripts\chromedriver.exe")
-driver = webdriver.Chrome(service=service, options=chrome_options)
-driver.maximize_window()
-driver.implicitly_wait(10)
-driver.get(release_url)
-driver.find_element(By.ID, "floatingInputValue").send_keys("bikash.sahoo@sharajman.com")
-driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@12345")
-driver.find_element(By.XPATH, "//button[text()='Login ']").click()
-print("Login Successful")
-wait = WebDriverWait(driver, 10)
-wait.until(EC.url_contains("https://release.gensom.sharajman.com/dash")) 
-print("Redirected to overview dashboard page")
+driver , wait = init.init_login()
 
 driver.get("https://release.gensom.sharajman.com/vendor-managment")
 
@@ -55,12 +41,25 @@ else:
     select_bill_state.select_by_visible_text(bill_state)
 
 
-select_activityTag = Select(driver.find_element(By.XPATH, "//ng-select[@placeholder='Select Activity']"))
-battery_setup = driver.find_element(By.XPATH, "//span[contains(text(), 'Battery Setup')]")
+dropdown_xpath = "//div[contains(@class, 'ng-select-container')]"
+dropdown = wait.until(EC.element_to_be_clickable((By.XPATH, dropdown_xpath)))
+dropdown.click()
+
+# Wait and select "Battery Setup"
+battery_setup_xpath = "//ng-dropdown-panel//div[contains(@class,'ng-option') and span[text()='Battery Setup']]"
+battery_setup = wait.until(EC.element_to_be_clickable((By.XPATH, battery_setup_xpath)))
 battery_setup.click()
 
+dropdown.click()
+# Wait and select "Oil Filtration"
+oil_filtration_xpath = "//ng-dropdown-panel//div[contains(@class,'ng-option') and span[text()='Oil Filtration']]"
+oil_filtration = wait.until(EC.element_to_be_clickable((By.XPATH, oil_filtration_xpath)))
+oil_filtration.click()
 
-# driver.find_element(By.XPATH, "//ng-select[@placeholder='Select Activity']").click()
-# battery_setup = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, '//*[@id="a88e1315178d-0"]/span')))
-# battery_setup.click()
-    
+dropdown.click()
+# Wait and select "Cable Configuration"
+Cable_Configuration_xpath = "//ng-dropdown-panel//div[contains(@class,'ng-option') and span[text()='Cable Configuration']]"
+Cable_Configuration = wait.until(EC.element_to_be_clickable((By.XPATH, Cable_Configuration_xpath)))
+Cable_Configuration.click()
+
+init.save(driver)

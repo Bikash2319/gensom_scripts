@@ -11,4 +11,3 @@ chrome_options = Options()
 service = Service(executable_path="C:\Program Files\Python313\Scripts\chromedriver.exe")
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
-add_make_button= driver.find_element(By.XPATH, "//div[@ngbtooltip='Add Make']")
