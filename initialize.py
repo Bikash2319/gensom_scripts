@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import Select
 from user_input import *
 import time
+import pandas
 
 driver = None  
 wait = WebDriverWait (driver, 10)    

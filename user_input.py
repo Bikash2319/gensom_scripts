@@ -59,3 +59,15 @@ dc_cap = '6000'
 comm_date = '11-01-1999'
 start_time = '05:00'
 end_time = '19:00'
+
+#--------------------------------User Management---------------------------
+first_name = 'Bikashh'
+last_name = 'Sahoo'
+identity_number = '12345asdf'
+#enrollment_type = 'INTERNAL'
+enrollment_type = 'EXTERNAL'
+role = 'ADMIN'
+skills = 'Electrician', 'Mechanic'
+contract_number = ''
+company_name = 'ABC PVT LTD'
+
