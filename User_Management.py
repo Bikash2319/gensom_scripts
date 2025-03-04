@@ -48,6 +48,14 @@ elif enrollment_type == 'EXTERNAL':
     driver.find_element(By.ID, "rate").send_keys('1000')
     driver.find_element(By.ID, "skill").send_keys(skills)
     
+    team_dropdown = driver.find_element(By.XPATH, "//div[text()='Select Project']")
+    team_dropdown.click()
+    
+    dev_option = driver.find_element(By.XPATH, "//ng-dropdown-panel//div[contains(@class,'ng-option') and span[text()='dev']]")
+    select_dev = wait.until(EC.element_to_be_clickable(dev_option))
+    select_dev.click()
+    print('Dev option is clicked')
+    
     
     driver.find_element(By.ID, "contract_number").send_keys(contract_number)
     

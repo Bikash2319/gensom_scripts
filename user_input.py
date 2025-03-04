@@ -4,7 +4,7 @@ release_url = "https://release.gensom.sharajman.com/login"
 
 #----------------------Modules Name------------------
 #--------------------make----------------------
-make = 'Solis'
+make = 'Soliss'
 
 #-------------------------Category--------------------------
 category = "Device"
@@ -48,8 +48,8 @@ quantity = '100'
 po_number = '12345ASDFG'
 
 #-----------------------Project Management----------------------
-plant_name = 'Testing Project 1'
-s_name = 'TP01'
+plant_name = 'Testing Project 2'
+s_name = 'TP02'
 p_add = "Barakhamba, Delhi, India 110033"
 p_lat = '52.36'
 p_long = '122.52'

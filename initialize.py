@@ -25,7 +25,7 @@ class init:
         driver.find_element(By.XPATH, "//button[text()='Login ']").click()
         print("Login Successful")
         wait = WebDriverWait(driver, 20)
-        wait.until(EC.url_contains("https://release.gensom.sharajman.com/dash")) 
+        wait.until(EC.url_to_be("https://release.gensom.sharajman.com/dash")) 
         return driver, wait
     
             
@@ -40,3 +40,8 @@ class init:
         save_button = driver.find_element(By.XPATH, "//button[text()=' Save ' or text()='Save']")
         save_button.click()
         print("SAve button clicked")
+        
+    def cancel(driver):
+        cancel_button = driver.find_element(By.XPATH, "//button[text()=' Cancel ' or text()='Cancel']")
+        cancel_button.click()
+        print("Cancel button clicked")

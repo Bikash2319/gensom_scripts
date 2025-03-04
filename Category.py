@@ -29,3 +29,5 @@ wait_toaster = WebDriverWait(driver, 10)
 toaster = wait_toaster.until(EC.visibility_of_element_located((By.ID, "toast-container")))
 print(f" {toaster.text}")
 toaster.click()
+
+
