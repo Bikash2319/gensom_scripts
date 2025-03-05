@@ -1,22 +1,24 @@
 #------------------------URL--------------------------------
 dev_url = "https://dev.gensom.sharajman.com/login"
+
 release_url = "https://release.gensom.sharajman.com/login"
+
 
 #----------------------Modules Name------------------
 #--------------------make----------------------
-make = 'Soliss'
+make = 'Test Make'
 
 #-------------------------Category--------------------------
-category = "Device"
+category = "Test Category"
 
 #-------------------------sub-Category--------------------------
-sub_category = 'Inverter'
+sub_category = 'Test SubCategory'
 
 #-------------------------Model--------------------------
-model = "Inv Solis 50k"
+model = "Test Model"
 
 #-------------------------Vendor--------------------------
-vendor_type = 'Grass Cutting'
+vendor_type = 'Test Vendor Type'
 vt_checkbox = 1
 
 #-------------------------Vendor Management--------------------------
@@ -32,16 +34,19 @@ bill_add = 'Bhubaneswar, Odisha, 751002'
 bill_state = 'Odisha'
 
 #-------------------------warehouse---------------------------
-warehouse_type = 'EXTERNAL'
+warehouse_type = 'INTERNAL'
 warehouse_sub_type = 'NATIONAL'
-w_name = 'Testing Warehouse'
+w_name = 'Testing Warehouse 1'
 w_city = "Delhi"
 latitude = "65.55"
 longitude = "112.52"
-warehouse_address = "Barakhamba, Delhi, India 110033"
+warehouse_address = "Flaunt"
 
 #-----------------------Inventory------------------------------
-inventory_name = 'Test Inventory'
+inventory_name = 'Test Inventory 2'
+inv_type = 'String'
+ac_capacity = '104.0'
+dc_capacity = '55.0'
 serial_no = '123456'
 reorder_point = '1'
 quantity = '100'
@@ -56,7 +61,7 @@ p_long = '122.52'
 tilt = '5.33'
 ac_cap = '5000'
 dc_cap = '6000'
-comm_date = '11-01-1999'
+comm_date = ''
 start_time = '05:00'
 end_time = '19:00'
 

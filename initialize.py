@@ -21,7 +21,7 @@ class init:
         driver.implicitly_wait(20)
         driver.get(release_url)
         driver.find_element(By.ID, "floatingInputValue").send_keys("bikash.sahoo@sharajman.com")
-        driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@12345")
+        driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
         driver.find_element(By.XPATH, "//button[text()='Login ']").click()
         print("Login Successful")
         wait = WebDriverWait(driver, 20)
