@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import Select
 import time
 
-dev_url = "https://uat.gensom.sharajman.com/login"
+dev_url = "https://dev.gensom.sharajman.com/login"
 
 chrome_options = Options()
 service = Service(executable_path="C:\Program Files\Python313\Scripts\chromedriver.exe")
@@ -15,27 +15,27 @@ driver = webdriver.Chrome(service=service, options=chrome_options)
 driver.maximize_window()
 driver.implicitly_wait(20)
 driver.get(dev_url)
-driver.find_element(By.ID, "floatingInputValue").send_keys("ashish.k@sharajman.com")
-driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin1234")
+driver.find_element(By.ID, "floatingInputValue").send_keys("bikash.sahoo@sharajman.com")
+driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
 driver.find_element(By.XPATH, "//button[text()='Login ']").click()
 print("Login Successful")
 wait = WebDriverWait(driver, 20)
-wait.until(EC.url_to_be("https://uat.gensom.sharajman.com/dash"))
+wait.until(EC.url_to_be("https://dev.gensom.sharajman.com/dash"))
 
-w_name = 'Kishangarh Site Warehouse'
-plant_name = 'DH Kishangarh'
-s_name = 'REIL017'
-p_add = "Bikaner, Rajasthan"
+w_name = 'Lifting Workshop Site Warehouse'
+plant_name = 'Lifting Workshop'
+s_name = 'lifting'
+p_add = "Sanpada, Maharashtra"
 p_lat = '53.526'
 p_long = '85.69'
 tilt = '5.33'
-ac_cap = '50'
-dc_cap = '51'
+ac_cap = '300'
+dc_cap = '415'
 comm_date = '02-05-2025'
 start_time = '05:00'
 end_time = '19:00'
 
-driver.get("https://uat.gensom.sharajman.com/plant-management")
+driver.get("https://dev.gensom.sharajman.com/plant-management")
 add_project_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@ngbtooltip='Add Project']")))
 add_project_button.click()
 print("Add project button clicked")
@@ -65,20 +65,20 @@ driver.find_element(By.ID, "dc_capacity").send_keys(dc_cap)
 driver.find_element(By.ID, "ac_capacity").send_keys(ac_cap)
 driver.find_element(By.ID, "commissioning_date").send_keys(comm_date)
 driver.find_element(By.ID, "warehouse").send_keys(w_name)
-driver.find_element(By.ID, "is_wms_installed").click()
-driver.find_element(By.ID, "is_smb_installed").click()
+# driver.find_element(By.ID, "is_wms_installed").click()
+# driver.find_element(By.ID, "is_smb_installed").click()
 driver.find_element(By.ID, "start_time").send_keys(start_time)
 driver.find_element(By.ID, "end_time").send_keys(end_time)
 driver.find_element(By.XPATH, "//button[text()=' Save ']").click()          
            
 # warehouse_type = 'INTERNAL'
 # warehouse_sub_type = 'NATIONAL'
-# w_name = 'Kishangarh Site Warehouse'
-# w_city = "Kishangarh"
+# w_name = 'Lonavala Site Warehouse'
+# w_city = "Lonavala"
 # # latitude = ""
 # # longitude = ""
-# warehouse_address = "Kishangarh, Rajasthan"
-# driver.get("https://uat.gensom.sharajman.com/warehouse")
+# warehouse_address = "Lonavala, Maharashtra"
+# driver.get(f"https://{environment}.gensom.sharajman.com/warehouse")
 
 # add_warehouse_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@ngbtooltip='Add Warehouse']")))
 # add_warehouse_button.click()

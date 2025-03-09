@@ -29,12 +29,15 @@ class init:
         return driver, wait
     
             
-    #Toaster 
+    #Toaster        
     def toaster(wait):
-        toaster = wait.until(EC.visibility_of_element_located((By.ID, "toast-container")))
-        print(f" {toaster.text}")
-        toaster.click()
-     
+        try:
+            toaster = wait.until(EC.visibility_of_element_located((By.ID, "toast-container")))
+            print(f" {toaster.text}")
+            toaster.click()
+        except:
+            print("No toaster message appeared.")  
+             
      #Save button   
     def save(driver):
         save_button = driver.find_element(By.XPATH, "//button[text()=' Save ' or text()='Save']")
