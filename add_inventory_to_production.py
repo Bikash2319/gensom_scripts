@@ -22,7 +22,7 @@ wait = WebDriverWait(driver, 10)
 
 #Inject token for authentication
 driver.get("https://refex.gensomerp.com/")
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQxNzE3MTY0fQ.VPEMcr5zxzqCEwauY_bFgGVb9d0p521DdsvMYhayNPU"
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQxNzk4OTY3fQ.SOYjzhfcbjDUZj3UvMFu7dnwISqj61Hi95N_uxlrfaU"
 driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
 print("Login Successful")
 driver.get("https://refex.gensomerp.com/inventory-managment")
@@ -44,7 +44,7 @@ for item in data_list:
 
     time.sleep(0.5)
     inventory_name = item.get("item_name")
-    inv_name = driver.find_element(By.ID, "inventory_name")
+    inv_name = driver.find_element(By.ID, "inventory_name").send_keys(inventory_name)
     make = item.get("make").strip()
     select_make = Select(driver.find_element(By.ID, "make_id"))
     select_make.select_by_visible_text(make)

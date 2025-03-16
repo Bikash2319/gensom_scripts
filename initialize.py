@@ -7,28 +7,28 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import Select
 from user_input import *
 import time
-import pandas
+import pandas as pd
+import openpyxl
+ 
 
-driver = None  
-wait = WebDriverWait (driver, 10)    
-
-class init:
+class init:   
     def init_login():
         chrome_options = Options()
-        service = Service(executable_path="C:\Program Files\Python313\Scripts\chromedriver.exe")
+        service = Service(executable_path=r"C:\Program Files\Python313\Scripts\chromedriver.exe")
         driver = webdriver.Chrome(service=service, options=chrome_options)
         driver.maximize_window()
-        driver.implicitly_wait(20)
-        driver.get(release_url)
+        driver.implicitly_wait(10)
+        wait = WebDriverWait(driver, 10)
+        return driver, wait
+        
+    def release_login(driver, wait):
+        driver.get("https://release.gensom.sharajman.com/login")
         driver.find_element(By.ID, "floatingInputValue").send_keys("bikash.sahoo@sharajman.com")
         driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
         driver.find_element(By.XPATH, "//button[text()='Login ']").click()
         print("Login Successful")
-        wait = WebDriverWait(driver, 20)
-        wait.until(EC.url_to_be("https://release.gensom.sharajman.com/dash")) 
-        return driver, wait
-    
-            
+        wait.until(EC.url_to_be("https://release.gensom.sharajman.com/dash"))
+           
     #Toaster        
     def toaster(wait):
         try:

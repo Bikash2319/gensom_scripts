@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 
+
 # Setup WebDriver
 chrome_options = Options()
 service = Service(executable_path=r"C:\Program Files\Python313\Scripts\chromedriver.exe")
@@ -26,10 +27,10 @@ driver.get("https://release.gensom.sharajman.com/make")
 
 # # Inject token for authentication
 # driver.get("https://refex.gensomerp.com/")
-# token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQxNjEwMTkwfQ.E0TI--ymByfq2CDJWfmyjLJdMB2FwEo5GNu4ywv0-W0"
+# token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQxODg1NzgwfQ.nw0vtsR4_IPiQSY5qz5q6MRE01tvFS2Cld0izs0nc2U"
 # driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
 # print("Login Successful")
-#driver.get("https://refex.gensomerp.com/make")
+# driver.get("https://refex.gensomerp.com/make")
 
 # Read Excel file
 file_path = "D:\\GenSOM Variables\\GenSOM ERP Variables.xlsx"

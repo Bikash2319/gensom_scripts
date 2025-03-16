@@ -20,7 +20,7 @@ wait = WebDriverWait(driver, 10)
 
 #Inject token for authentication
 driver.get("https://refex.gensomerp.com/")
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQxNzA1MTc3fQ.UBZlpZn3kNsk8CA-pWspgYdL3A1GC91roK7s8OZ5YD4"
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQxNzk4OTY3fQ.SOYjzhfcbjDUZj3UvMFu7dnwISqj61Hi95N_uxlrfaU"
 driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
 print("Login Successful")
 driver.get("https://refex.gensomerp.com/plant-management")
@@ -87,7 +87,7 @@ for item in data_list:
     driver.find_element(By.ID, "ac_capacity").send_keys(ac_cap)
 
     #comm_date = item.get("commissioning_date")
-    driver.find_element(By.ID, "commissioning_date").send_keys("2025-03-10")
+    driver.find_element(By.ID, "commissioning_date").send_keys("2025-03-11")
     
     w_name = item.get("warehouse")
     driver.find_element(By.ID, "warehouse").send_keys(w_name)
