@@ -50,7 +50,7 @@ for item in data_list:
     make_input.send_keys(make)
     init.save(driver)
     toaster = wait.until(EC.visibility_of_element_located((By.ID, "toast-container")))
-    print(f"{toaster.text}")
+    print(f"{make} {toaster.text}")
     toaster.click()
     if toaster.text == "Make already exists." :
         init.cancel(driver)

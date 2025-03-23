@@ -11,7 +11,7 @@ driver.maximize_window()
 driver.implicitly_wait(10)
 wait = WebDriverWait(driver, 10)
 
-#login with credential
+#login
 driver.get("https://release.gensom.sharajman.com/login")
 driver.find_element(By.ID, "floatingInputValue").send_keys("bikash.sahoo@sharajman.com")
 driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
@@ -20,16 +20,9 @@ print("Login Successful")
 wait.until(EC.url_to_be("https://release.gensom.sharajman.com/dash"))
 driver.get("https://release.gensom.sharajman.com/inventory-managment")
 
-# #Inject token for authentication
-# driver.get("https://refex.gensomerp.com/")
-# token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQyNTkwODAzfQ.zZTExlpaIMOUxXjuwhyfjypBL6a43me_1R_rk_yWPAM"
-# driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
-# print("Login Successful")
-# driver.get("https://refex.gensomerp.com/inventory-managment")
-
 #Read Excel sheet
 file_path = "D:\\GenSOM Variables\\GenSOM ERP Variables.xlsx"
-df = pd.read_excel(file_path, "inv", engine='openpyxl')
+df = pd.read_excel(file_path, "Testing", engine='openpyxl')
 
 # Convert to list of dictionaries
 data_list = df.to_dict(orient="records")
@@ -50,31 +43,43 @@ for item in data_list:
     select_make.select_by_visible_text(make)
 
     model = item.get("model_name").strip()
-    model_dropdown = wait.until(EC.element_to_be_clickable((
-        By.XPATH, "//div[contains(@class, 'ng-select-container')]"
-    )))
+    model_dropdown = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'ng-select-container')]")))
     model_dropdown.click()
-    model_option = driver.find_element(
-        By.XPATH, f"//ng-dropdown-panel//div[contains(@class, 'ng-option') and span[text()='{model}']]"
-    )
+    model_option = driver.find_element(By.XPATH, f"//ng-dropdown-panel//div[contains(@class, 'ng-option') and span[text()='{model}']]")
     model_option.click()
-
     time.sleep(1)
-    ac_capacity = str(item.get("ac_capacity", "0"))  
-    dc_capacity = str(item.get("dc_capacity", "0"))
+
     subCategory_value = driver.find_element(By.ID, "sub_category_id")
-    sub_category_field = subCategory_value.get_attribute("value").strip()
+    sub_category_field = subCategory_value.get_attribute("textContent").strip()
+    #sub_category_field = driver.execute_script("return arguments[0].textContent;", subCategory_value)
     print(f"Sub Category Retrieved: {sub_category_field}")
+    sub_category_text = sub_category_field.replace("Select Sub Category", "").strip()
+    print(f"sub category is :{sub_category_text}")
+    
+    ac_capacity = str(item.get("ac_capacity", "0"))
+    dc_capacity = str(item.get("dc_capacity", "0"))
+    inv_type = item.get("inv_type", "")
 
-    wait.until(EC.element_to_be_clickable((By.ID, "ac_capacity"))).send_keys(ac_capacity)
-    time.sleep(1)
+    if sub_category_text.lower() == "inverters":
+        time.sleep(1)
+        wait.until(EC.element_to_be_clickable((By.ID, "ac_capacity"))).send_keys(ac_capacity)
+        wait.until(EC.element_to_be_clickable((By.ID, "dc_capacity"))).send_keys(dc_capacity)
+        time.sleep(1)
+        inverter_type = Select(driver.find_element(By.ID, "inverter_type"))
+        inverter_type.select_by_visible_text(inv_type)
+        print("Inverter fields filled.")
 
-    wait.until(EC.element_to_be_clickable((By.ID, "dc_capacity"))).send_keys(dc_capacity)
-    time.sleep(1)
-    inverter_type = Select(driver.find_element(By.ID, "inverter_type"))
-    inv_type = item.get("inv_type")
-    print(inv_type)
-    inverter_type.select_by_visible_text(inv_type)
+    elif sub_category_text.lower() == "string monitoring box":
+        wait.until(EC.element_to_be_clickable((By.ID, "ac_capacity"))).send_keys(ac_capacity)
+        wait.until(EC.element_to_be_clickable((By.ID, "dc_capacity"))).send_keys(dc_capacity)
+        print("SMB fields filled.")
+
+    elif sub_category_text.lower() in ["multi functional meter", "weather monitoring system"]:
+        print("No fields filled for MFM/WMS.")
+
+    else:
+        print("Unknown sub-category. No fields filled.")
+
 
     w_name = item.get("warehouse")
     select_warehouse = Select(driver.find_element(By.ID, "warehouse_id"))

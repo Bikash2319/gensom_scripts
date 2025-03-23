@@ -9,21 +9,21 @@ driver.maximize_window()
 driver.implicitly_wait(10)
 wait = WebDriverWait(driver, 10)
 
-# #login
-# driver.get("https://release.gensom.sharajman.com/login")
-# driver.find_element(By.ID, "floatingInputValue").send_keys("bikash.sahoo@sharajman.com")
-# driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
-# driver.find_element(By.XPATH, "//button[text()='Login ']").click()
-# print("Login Successful")
-# wait.until(EC.url_to_be("https://release.gensom.sharajman.com/dash"))
-# driver.get("https://release.gensom.sharajman.com/plant-management")
-
-#Inject token for authentication
-driver.get("https://refex.gensomerp.com/")
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQxNzk4OTY3fQ.SOYjzhfcbjDUZj3UvMFu7dnwISqj61Hi95N_uxlrfaU"
-driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
+#login
+driver.get("https://release.gensom.sharajman.com/login")
+driver.find_element(By.ID, "floatingInputValue").send_keys("bikash.sahoo@sharajman.com")
+driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
+driver.find_element(By.XPATH, "//button[text()='Login ']").click()
 print("Login Successful")
-driver.get("https://refex.gensomerp.com/plant-management")
+wait.until(EC.url_to_be("https://release.gensom.sharajman.com/dash"))
+driver.get("https://release.gensom.sharajman.com/plant-management")
+
+# #Inject token for authentication
+# driver.get("https://refex.gensomerp.com/")
+# token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQyNTkwODAzfQ.zZTExlpaIMOUxXjuwhyfjypBL6a43me_1R_rk_yWPAM"
+# driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
+# print("Login Successful")
+# driver.get("https://refex.gensomerp.com/plant-management")
 
 #Read Excel sheet
 file_path = "D:\\GenSOM Variables\\GenSOM ERP Variables.xlsx"
@@ -106,6 +106,11 @@ for item in data_list:
     init.save(driver)
     time.sleep(2)
     driver.back()
-    #driver.find_element(By.XPATH("//button[text()= ' Cancel ']")).click()
+    # driver.find_element(By.XPATH("//button[text()= ' Cancel ']")).click()
     print(f"{plant_name} is added")
+    
+    
+    
+
+    
         

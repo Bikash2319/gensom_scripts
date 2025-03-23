@@ -16,21 +16,23 @@ driver.maximize_window()
 driver.implicitly_wait(10)
 wait = WebDriverWait(driver, 10)
 
-# Inject token for authentication
-# driver.get("https://refex.gensomerp.com/model")
-# driver.get("https://release.gensom.sharajman.com/model")
-# token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQxNjEwMTkwfQ.E0TI--ymByfq2CDJWfmyjLJdMB2FwEo5GNu4ywv0-W0"
-# driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
-# print("Login Successful")
-
-driver.get("https://refex.gensomerp.com/login")
-driver.find_element(By.ID, "floatingInputValue").send_keys("ashish.k@sharajman.com")
-driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin1234")
+driver.get("https://release.gensom.sharajman.com/login")
+driver.find_element(By.ID, "floatingInputValue").send_keys("bikash.sahoo@sharajman.com")
+driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
 driver.find_element(By.XPATH, "//button[text()='Login ']").click()
 print("Login Successful")
-wait.until(EC.url_to_be("https://refex.gensomerp.com/dash"))
+wait.until(EC.url_to_be("https://release.gensom.sharajman.com/dash"))
+driver.get("https://release.gensom.sharajman.com/model")
 
-driver.get("https://refex.gensomerp.com/model")
+# driver.get("https://refex.gensomerp.com/login")
+# driver.find_element(By.ID, "floatingInputValue").send_keys("ashish.k@sharajman.com")
+# driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin1234")
+# driver.find_element(By.XPATH, "//button[text()='Login ']").click()
+# print("Login Successful")
+# wait.until(EC.url_to_be("https://refex.gensomerp.com/dash"))
+# driver.get("https://refex.gensomerp.com/model")
+
+
 # Read Excel file
 file_path = "D:\\GenSOM Variables\\GenSOM ERP Variables.xlsx"
 df = pd.read_excel(file_path, "Model", engine='openpyxl')
