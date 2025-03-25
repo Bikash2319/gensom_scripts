@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service 
 from selenium.webdriver.chrome.options import Options 
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.keys import Keys
 from user_input import *
 import time
 import pandas as pd
@@ -14,7 +15,7 @@ import openpyxl
 class init:   
     def init_login():
         chrome_options = Options()
-        service = Service(executable_path=r"C:\Program Files\Python313\Scripts\chromedriver.exe")
+        service = Service(executable_path=r"C:\Users\Bikash Chandra Sahoo\AppData\Local\Programs\Python\Python313\Scripts\chromedriver.exe")
         driver = webdriver.Chrome(service=service, options=chrome_options)
         driver.maximize_window()
         driver.implicitly_wait(10)

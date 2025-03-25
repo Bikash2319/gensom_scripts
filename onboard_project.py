@@ -1,5 +1,4 @@
 from initialize import *
-import pandas as pd
 import random
 import string
 from selenium.webdriver.common.action_chains import ActionChains
@@ -7,7 +6,7 @@ from selenium.webdriver.common.keys import Keys
 
 #setup
 chrome_options = Options()
-service = Service(executable_path="C:\Program Files\Python313\Scripts\chromedriver.exe")
+service = Service(executable_path=r"C:\Users\Bikash Chandra Sahoo\AppData\Local\Programs\Python\Python313\Scripts\chromedriver.exe")
 driver = webdriver.Chrome(service=service, options=chrome_options)
 driver.maximize_window()
 driver.implicitly_wait(10)
@@ -20,8 +19,8 @@ driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Adm
 driver.find_element(By.XPATH, "//button[text()='Login ']").click()
 print("Login Successful")
 wait.until(EC.url_to_be("https://release.gensom.sharajman.com/dash"))
-driver.get("https://release.gensom.sharajman.com/plant-management")
 
+file_path = "D:\\GenSOM Variables\\GenSOM ERP Variables.xlsx"
 logger_make = 'magamic'
 logger_model = 'model1'
 
@@ -32,123 +31,6 @@ logger_model = 'model1'
 # print("Login Successful")
 # driver.get("https://refex.gensomerp.com/plant-management")
 
-#Read Excel sheet
-file_path = "D:\\GenSOM Variables\\GenSOM ERP Variables.xlsx"
-df1 = pd.read_excel(file_path, "Add Project", engine='openpyxl')
-
-# Convert to list of dictionaries
-data_list = df1.to_dict(orient="records")
-
-for item in data_list:
-    time.sleep(1)
-    add_project_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@ngbtooltip='Add Project']")))
-    add_project_button.click()
-    print("Add project button clicked")
-
-    #Basic details tab
-    driver.find_element(By.XPATH, "//button[text()='Basic Details']")
-    
-    plant_name = item.get("project_name").strip()
-    driver.find_element(By.ID, "plant_name").send_keys(plant_name)
-    
-    s_name = item.get("project_short_name").strip()
-    driver.find_element(By.ID, "short_name").send_keys(s_name)
-    
-    p_add = item.get("site_address")
-    driver.find_element(By.ID, "site_address").send_keys(p_add)
-    
-    p_lat = item.get("latitude")
-    driver.find_element(By.ID, "latitude").send_keys(p_lat)
-    
-    p_long = item.get("longitude")
-    driver.find_element(By.ID, "longitude").send_keys(p_long)
-
-    p_type = driver.find_element(By.ID, "domain")
-    select_type = Select(p_type)
-    select_type.select_by_visible_text("Solar Management System")
-
-    time.sleep(1)
-    select_subtype = Select(driver.find_element(By.ID, "subdomain"))
-    select_subtype.select_by_value("SOLAR_POWER_STORAGE")
-
-    time.sleep(1)
-    select_techno = Select(driver.find_element(By.ID, "technology_type"))
-    select_techno.select_by_value("MONOCRYSTALLINE")
-
-    time.sleep(1)
-    i_type = item.get("installation_type")
-    select_install = Select(driver.find_element(By.ID, "installation_type"))
-    select_install.select_by_value(i_type)
-
-    time.sleep(1)
-    select_mount = Select(driver.find_element(By.ID, "mounting_type"))
-    select_mount.select_by_value("FIXED TILT")
-
-    tilt = item.get("tilt")
-    driver.find_element(By.ID, "tilt_azimuth").send_keys(tilt)
-    
-    dc_cap = item.get("dc_capacity")
-    driver.find_element(By.ID, "dc_capacity").send_keys(dc_cap)
-    
-    ac_cap = item.get("ac_capacity")
-    driver.find_element(By.ID, "ac_capacity").send_keys(ac_cap)
-
-    #comm_date = item.get("commissioning_date")
-    driver.find_element(By.ID, "commissioning_date").send_keys("2025-03-11")
-    
-    w_name = item.get("warehouse")
-    driver.find_element(By.ID, "warehouse").send_keys(w_name)
-
-    # driver.find_element(By.ID, "is_wms_installed").click()
-    # driver.find_element(By.ID, "is_smb_installed").click()
-    
-    start_time = item.get("start_time")
-    driver.find_element(By.ID, "start_time").send_keys(start_time)
-    
-    end_time = item.get("end_time")
-    driver.find_element(By.ID, "end_time").send_keys(end_time)
-    time.sleep(2)
-    driver.find_element(By.XPATH, "//button[text()=' Save ']").click()
-    time.sleep(2)
-    
-    Logger = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()='Data Logger Details']")))
-    Logger.click()
-
-    add_logger = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH,"//button[text()=' Add Logger ']")))
-    add_logger.click()
-
-    time.sleep(1)
-    driver.find_element(By.XPATH, "//input[@placeholder='Enter Logger No']").send_keys("Logger 1")
-    driver.find_element(By.XPATH, "//input[@placeholder='Enter Block Name']").send_keys("Block 1")
-
-    make_dd = Select(wait.until(EC.element_to_be_clickable(driver.find_element(By.ID, "make_id"))))
-    make_dd.select_by_visible_text("magamic")
-    time.sleep(1)
-    model_dd = wait.until(EC.element_to_be_clickable(driver.find_element(
-    By.CSS_SELECTOR, "[bindvalue='model_id']"
-    )))
-
-    actions = ActionChains(driver)
-    actions.click(model_dd).send_keys('model1').send_keys(Keys.ENTER).perform()
-
-    connectivity = Select(driver.find_element(By.ID, "internet_connectivity"))
-    connectivity.select_by_visible_text("Wi-fi")
-
-    dev_num = random.randint(10000, 99999)
-    driver.find_element(By.ID, "device_serial_no").send_keys(dev_num)
-
-    driver.find_element(By.ID, "folder_path_to_ftp").send_keys("D:\ftp\logger")
-
-    wms = Select(driver.find_element(By.ID,"wms_available"))
-    wms.select_by_visible_text("Yes")
-
-    plant = Select(driver.find_element(By.ID, "plant_curlainment"))
-    plant.select_by_visible_text("Yes")
-
-    driver.find_element(By.XPATH, "//button[text()='Submit']").click()
-    driver.back()
-    #driver.find_element(By.XPATH("//button[text()= ' Cancel ']")).click()
-    print(f"{plant_name} and data logger added")
 
 driver.get("https://release.gensom.sharajman.com/inventory-managment")    
 df2 = pd.read_excel(file_path, "Testing", engine='openpyxl')
@@ -238,4 +120,167 @@ for item in data_list:
     if toaster.text.strip() == 'This Inventory already exists':
         init.cancel(driver)
     
+
+driver.get("https://release.gensom.sharajman.com/plant-management")
+#Read Excel sheet
+
+df1 = pd.read_excel(file_path, "Add Project", engine='openpyxl')
+
+# Convert to list of dictionaries
+data_list = df1.to_dict(orient="records")
+
+for item in data_list:
+    time.sleep(1)
+    add_project_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@ngbtooltip='Add Project']")))
+    add_project_button.click()
+    print("Add project button clicked")
+
+    #Basic details tab
+    driver.find_element(By.XPATH, "//button[text()='Basic Details']")
+    
+    plant_name = item.get("project_name").strip()
+    driver.find_element(By.ID, "plant_name").send_keys(plant_name)
+    
+    s_name = item.get("project_short_name").strip()
+    driver.find_element(By.ID, "short_name").send_keys(s_name)
+    
+    p_add = item.get("site_address")
+    driver.find_element(By.ID, "site_address").send_keys(p_add)
+    
+    p_lat = item.get("latitude")
+    driver.find_element(By.ID, "latitude").send_keys(p_lat)
+    
+    p_long = item.get("longitude")
+    driver.find_element(By.ID, "longitude").send_keys(p_long)
+
+    p_type = driver.find_element(By.ID, "domain")
+    select_type = Select(p_type)
+    select_type.select_by_visible_text("Solar Management System")
+
+    time.sleep(1)
+    select_subtype = Select(driver.find_element(By.ID, "subdomain"))
+    select_subtype.select_by_value("SOLAR_POWER_STORAGE")
+
+    time.sleep(1)
+    select_techno = Select(driver.find_element(By.ID, "technology_type"))
+    select_techno.select_by_value("MONOCRYSTALLINE")
+
+    time.sleep(1)
+    i_type = item.get("installation_type")
+    select_install = Select(driver.find_element(By.ID, "installation_type"))
+    select_install.select_by_value(i_type)
+
+    time.sleep(1)
+    select_mount = Select(driver.find_element(By.ID, "mounting_type"))
+    select_mount.select_by_value("FIXED TILT")
+
+    tilt = item.get("tilt")
+    driver.find_element(By.ID, "tilt_azimuth").send_keys(tilt)
+    
+    dc_cap = item.get("dc_capacity")
+    driver.find_element(By.ID, "dc_capacity").send_keys(dc_cap)
+    
+    ac_cap = item.get("ac_capacity")
+    driver.find_element(By.ID, "ac_capacity").send_keys(ac_cap)
+
+    #comm_date = item.get("commissioning_date")
+    driver.find_element(By.ID, "commissioning_date").send_keys("03/03/2025")
+    
+    w_name = item.get("warehouse")
+    driver.find_element(By.ID, "warehouse").send_keys(w_name)
+
+    # driver.find_element(By.ID, "is_wms_installed").click()
+    # driver.find_element(By.ID, "is_smb_installed").click()
+    
+    start_time = item.get("start_time")
+    driver.find_element(By.ID, "start_time").send_keys(start_time)
+    
+    end_time = item.get("end_time")
+    driver.find_element(By.ID, "end_time").send_keys(end_time)
+    time.sleep(2)
+    driver.find_element(By.XPATH, "//button[text()=' Save ']").click()
+    time.sleep(2)
+    
+    Logger = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()='Data Logger Details']")))
+    Logger.click()
+
+    add_logger = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH,"//button[text()=' Add Logger ']")))
+    add_logger.click()
+
+    time.sleep(1)
+    driver.find_element(By.XPATH, "//input[@placeholder='Enter Logger No']").send_keys("Logger 1")
+    driver.find_element(By.XPATH, "//input[@placeholder='Enter Block Name']").send_keys("Block 1")
+
+    make_dd = Select(wait.until(EC.element_to_be_clickable(driver.find_element(By.ID, "make_id"))))
+    make_dd.select_by_visible_text("magamic")
+    time.sleep(1.5)
+    model_dd = wait.until(EC.element_to_be_clickable(driver.find_element(
+    By.CSS_SELECTOR, "[bindvalue='model_id']"
+    )))
+
+    actions = ActionChains(driver)
+    actions.click(model_dd).send_keys('model1').send_keys(Keys.ENTER).perform()
+
+    connectivity = Select(driver.find_element(By.ID, "internet_connectivity"))
+    connectivity.select_by_visible_text("Wi-fi")
+
+    dev_num = random.randint(10000, 99999)
+    driver.find_element(By.ID, "device_serial_no").send_keys(dev_num)
+
+    driver.find_element(By.ID, "folder_path_to_ftp").send_keys("D:\ftp\logger")
+
+    wms = Select(driver.find_element(By.ID,"wms_available"))
+    wms.select_by_visible_text("Yes")
+
+    plant = Select(driver.find_element(By.ID, "plant_curlainment"))
+    plant.select_by_visible_text("Yes")
+
+    driver.find_element(By.XPATH, "//button[text()='Submit']").click()
+    #driver.back()
+    #driver.find_element(By.XPATH("//button[text()= ' Cancel ']")).click()
+    print(f"{plant_name} and data logger added")
+    time.sleep(1)
+
+    equipment_tab = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()='Equipment Details']")))
+    equipment_tab.click()
+    print("Equipment tab clicked")
+
+    add_equipment = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()=' Add Equipment ']")))
+    add_equipment.click()
+    print("Add equipment button clicked")
+
+    search_equipment = wait.until(EC.element_to_be_clickable(driver.find_element(By.ID, "typeahead-format")))
+    search_equipment.send_keys("Major Equipment")
+    time.sleep(2)
+
+    elements = search_equipment.find_elements(By.XPATH, "//ngb-typeahead-window//button")
+    dropdown_values = [option.text for option in elements]
+    dropdown_len=len(dropdown_values)
+    close_modal = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[@aria-label='Close']")))
+    time.sleep(1)
+    close_modal.click()
+    for i in range(0,dropdown_len):
+        print(i)
+        add_equipment = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()=' Add Equipment ']")))
+        add_equipment.click()
+        print("Add equipment button clicked")
+
+        search_equipment = wait.until(EC.element_to_be_clickable(driver.find_element(By.ID, "typeahead-format")))
+        search_equipment.send_keys("Major Equipment")
+        time.sleep(2)
+        search_equipment.send_keys(Keys.ENTER)
+        time.sleep(2)
+
+        installation_date = wait.until(EC.element_to_be_clickable(driver.find_element(By.ID, "installation_date")))
+        installation_date.send_keys("01/01/2025")
+        fetch = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//i[@class='fas fa-circle-notch']")))
+        fetch.click()
+        print('----------------------------------')
+        
+        data_logger_dd = Select(driver.find_element(By.ID, "data_logger_id"))
+        data_logger_dd.select_by_visible_text("Logger 1")
+
+        driver.find_element(By.XPATH, "//button[text()=' Add  ']").click()
+
+
         
