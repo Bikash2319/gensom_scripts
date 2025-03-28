@@ -11,19 +11,19 @@ from selenium.webdriver.chrome.options import Options
 
 # Setup WebDriver
 chrome_options = Options()
-service = Service(executable_path=r"C:\Program Files\Python313\Scripts\chromedriver.exe")
+service = Service(executable_path=r"C:\Users\Bikash Chandra Sahoo\AppData\Local\Programs\Python\Python313\Scripts\chromedriver.exe")
 driver = webdriver.Chrome(service=service, options=chrome_options)
 driver.maximize_window()
 driver.implicitly_wait(10)
 wait = WebDriverWait(driver, 10)
 
-driver.get("https://release.gensom.sharajman.com/login")
+driver.get("https://dev.gensom.sharajman.com/login")
 driver.find_element(By.ID, "floatingInputValue").send_keys("bikash.sahoo@sharajman.com")
 driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
 driver.find_element(By.XPATH, "//button[text()='Login ']").click()
 print("Login Successful")
-wait.until(EC.url_to_be("https://release.gensom.sharajman.com/dash"))
-driver.get("https://release.gensom.sharajman.com/make")
+wait.until(EC.url_to_be("https://dev.gensom.sharajman.com/dash"))
+driver.get("https://dev.gensom.sharajman.com/make")
 
 # # Inject token for authentication
 # driver.get("https://refex.gensomerp.com/")
