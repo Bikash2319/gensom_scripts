@@ -1,9 +1,8 @@
 from initialize import *
-from selenium.webdriver.common.keys import Keys
-import pandas as pd
 import random
 import string
-import math
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 
 #setup
 chrome_options = Options()
@@ -12,28 +11,29 @@ driver = webdriver.Chrome(service=service, options=chrome_options)
 driver.maximize_window()
 driver.implicitly_wait(10)
 wait = WebDriverWait(driver, 10)
+file_path = "D:\\GenSOM Variables\\GenSOM ERP Variables.xlsx"
 
-#login
-driver.get("https://dev.gensom.sharajman.com/login")
-driver.find_element(By.ID, "floatingInputValue").send_keys("bikash.sahoo@sharajman.com")
-driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
-driver.find_element(By.XPATH, "//button[text()='Login ']").click()
-print("Login Successful")
-wait.until(EC.url_to_be("https://dev.gensom.sharajman.com/dash"))
 
-# driver.get("https://refex.gensomerp.com/")
-# token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQzMDk2ODg5fQ.5PEOHX_HgTV4CQ7yEV3v7E7Da5fx3DxGD4esOSX54rA"
-# driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
+# #login
+# driver.get("https://release.gensom.sharajman.com/login")
+# driver.find_element(By.ID, "floatingInputValue").send_keys("ehtasham.hussain@sharajman.com")
+# driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin1234")
+# driver.find_element(By.XPATH, "//button[text()='Login ']").click()
 # print("Login Successful")
-# driver.get("https://refex.gensomerp.com/inventory-managment")
+# wait.until(EC.url_to_be("https://release.gensom.sharajman.com/dash"))
+# driver.get("https://release.gensom.sharajman.com/inventory-managment")
 
-# driver.get("https://dev.gensom.sharajman.com/inventory-managment")
-# #Read Excel sheet
-# file_path = "D:\\GenSOM Variables\\GenSOM ERP Variables.xlsx"
-# df = pd.read_excel(file_path, "Testing")
 
-# # Convert to list of dictionaries
-# data_list = df.to_dict(orient="records")
+#Inject token for authentication
+driver.get("https://refex.gensomerp.com/")
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQ0MTI2NTI2fQ.RAfuPq2DyIxPDgW2LDGshXSZsyCwROECWfdrrS5Fl6k"
+driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
+print("Login Successful")
+#driver.get("https://refex.gensomerp.com/inventory-managment")
+
+df2 = pd.read_excel(file_path, "Add Inventory")
+# Convert to list of dictionaries
+data_list = df2.to_dict(orient="records")
 
 # for item in data_list:
       
@@ -64,7 +64,7 @@ wait.until(EC.url_to_be("https://dev.gensom.sharajman.com/dash"))
 #     print(f"sub category is :{sub_category_text}")
     
 #     ac_capacity = str(item.get("ac_capacity", "0"))
-#     dc_capacity = float(item.get("dc_capacity", "0"))
+#     dc_capacity = str(item.get("dc_capacity", "0"))
 #     inv_type = item.get("inv_type", "")
 
 #     if sub_category_text.lower() in ["inverters", "inverter"]:
@@ -74,15 +74,11 @@ wait.until(EC.url_to_be("https://dev.gensom.sharajman.com/dash"))
 #         time.sleep(1)
 #         inverter_type = Select(driver.find_element(By.ID, "inverter_type"))
 #         inverter_type.select_by_visible_text(inv_type)
-#         print("Inverter fields filled.")
 
 #     elif sub_category_text.lower() == "string monitoring box":
-        
 #         wait.until(EC.element_to_be_clickable((By.ID, "ac_capacity"))).send_keys(ac_capacity)
-#         factor = 10 ** 2
-#         round_dc = math.ceil(dc_capacity * factor) / factor
-#         wait.until(EC.element_to_be_clickable((By.ID, "dc_capacity"))).send_keys(round_dc)
-#         print("SMB fields filled.")
+#         smb_dc =str(round(dc_capacity,2))
+#         wait.until(EC.element_to_be_clickable((By.ID, "dc_capacity"))).send_keys(smb_dc)
 
 #     elif sub_category_text.lower() in ["multi functional meter", "weather monitoring system"]:
 #         print("No fields filled for MFM/WMS.")
@@ -115,6 +111,7 @@ wait.until(EC.url_to_be("https://dev.gensom.sharajman.com/dash"))
 #     print(po_number)
 
 #     init.save(driver)
+#     time.sleep(0.5)
 
 #     toaster = wait.until(EC.visibility_of_element_located((By.ID, "toast-container")))
 #     print(f"Toaster message: {toaster.text}")
@@ -122,53 +119,51 @@ wait.until(EC.url_to_be("https://dev.gensom.sharajman.com/dash"))
 #     if toaster.text.strip() == 'This Inventory already exists':
 #         init.cancel(driver)
 
-driver.get("https://dev.gensom.sharajman.com/plant-management/5/edit-plant")
-time.sleep(1)
-equipment_tab = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()='Equipment Details']")))
-equipment_tab.click()
-print("Equipment tab clicked")
+for item in data_list:
+    try:
+        #driver.get("https://release.gensom.sharajman.com/plant-management/73/edit-plant")
+        driver.get("https://refex.gensomerp.com/plant-management/5/edit-plant")
+        time.sleep(1)
+        equipment_tab = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()='Equipment Details']")))
+        equipment_tab.click()
 
-add_equipment = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()=' Add Equipment ']")))
-add_equipment.click()
-print("Add equipment button clicked")
+        add_equipment = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()=' Add Equipment ']")))
+        add_equipment.click()
 
-search_equipment = wait.until(EC.element_to_be_clickable(driver.find_element(By.ID, "typeahead-format")))
-search_equipment.send_keys("Devices")
-time.sleep(5)
+        search_equipment = wait.until(EC.element_to_be_clickable(driver.find_element(By.ID, "typeahead-format")))
+        search_equipment.send_keys("Major Equipment")
+        time.sleep(5)
 
-elements = search_equipment.find_elements(By.XPATH, "//ngb-typeahead-window//button")
-dropdown_values = [option.text for option in elements]
-dropdown_len=len(dropdown_values)
-close_modal = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[@aria-label='Close']")))
-time.sleep(1)
-close_modal.click()
-for i in range(0,dropdown_len):
-    print(i)
-    add_equipment = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()=' Add Equipment ']")))
-    add_equipment.click()
-    print("Add equipment button clicked")
+        elements = search_equipment.find_elements(By.XPATH, "//ngb-typeahead-window//button")
+        dropdown_values = [option.text for option in elements]
+        dropdown_len=len(dropdown_values)
+        close_modal = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[@aria-label='Close']")))
+        time.sleep(1)
+        close_modal.click()
+        for i in range(0,dropdown_len):
+            print(i)
+            add_equipment = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()=' Add Equipment ']")))
+            add_equipment.click()
 
-    search_equipment = wait.until(EC.element_to_be_clickable(driver.find_element(By.ID, "typeahead-format")))
-    search_equipment.send_keys("Devices")
-    time.sleep(2)
-    search_equipment.send_keys(Keys.ENTER)
-    time.sleep(2)
+            search_equipment = wait.until(EC.element_to_be_clickable(driver.find_element(By.ID, "typeahead-format")))
+            search_equipment.send_keys("Major Equipment")
+            time.sleep(2)
+            search_equipment.send_keys(Keys.ENTER)
+            time.sleep(2)
 
-    installation_date = wait.until(EC.element_to_be_clickable(driver.find_element(By.ID, "installation_date")))
-    installation_date.send_keys("01/01/2025")
-    fetch = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//i[@class='fas fa-circle-notch']")))
-    fetch.click()
-    print('----------------------------------')
+            installation_date = wait.until(EC.element_to_be_clickable(driver.find_element(By.ID, "installation_date")))
+            installation_date.send_keys("01/04/2025")
+            fetch = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//i[@class='fas fa-circle-notch']")))
+            fetch.click()
+            
+            
+            data_logger_dd = Select(driver.find_element(By.ID, "data_logger_id"))
+            data_logger_dd.select_by_visible_text("Logger 1")
+
+            driver.find_element(By.XPATH, "//button[text()=' Add  ']").click()
     
-    data_logger_dd = Select(driver.find_element(By.ID, "data_logger_id"))
-    data_logger_dd.select_by_visible_text("Logger-0011New")
-
-    mounting_dd = Select(driver.find_element(By.ID, "mounting_type"))
-    mounting_dd.select_by_visible_text("Fixed Tilt")
-
-    driver.find_element(By.XPATH, "//button[text()=' Add  ']").click()
-    time.sleep(0.5)
+    except Exception as e:
+        print(f"Error adding project {item.get('project_name')}: {e}")
 
 
-
-
+driver.close()
