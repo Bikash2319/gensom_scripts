@@ -24,6 +24,7 @@ driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
 print("Login Successful")
 
 
+
 file_path = "D:\\GenSOM Variables\\GenSOM ERP Variables.xlsx"
 df = pd.read_excel(file_path, "inv")
 
