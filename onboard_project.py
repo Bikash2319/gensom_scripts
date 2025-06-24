@@ -6,7 +6,7 @@ from selenium.webdriver.common.keys import Keys
 
 #setup
 chrome_options = Options()
-service = Service(executable_path=r"C:\Users\Bikash Chandra Sahoo\AppData\Local\Programs\Python\Python313\Scripts\chromedriver.exe")
+service = Service(executable_path=r"C:\\Program Files\\Python313\Scripts\\chromedriver.exe")
 driver = webdriver.Chrome(service=service, options=chrome_options)
 driver.maximize_window()
 driver.implicitly_wait(10)
@@ -25,11 +25,11 @@ file_path = "D:\\GenSOM Variables\\GenSOM ERP Variables.xlsx"
 
 
 #Inject token for authentication
-driver.get("https://refex.gensomerp.com/")
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQzNzg5OTg2fQ.CveaZKuSmwIA_tx2YYWzUW-_mQZAUQZCUGiAqkuWcWA"
+driver.get("https://refex.dev.gensomerp.com/login")
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQ4OTgwMjk2fQ.Y-9Vpf1f4jbdnrfue21sv2Q-83QtA2pUJdBvFOSrSzI"
 driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
 print("Login Successful")
-driver.get("https://refex.gensomerp.com/inventory-managment")
+driver.get("https://refex.dev.gensomerp.com/inventory-managment")
 
 
 df2 = pd.read_excel(file_path, "Add Inventory")
@@ -132,7 +132,7 @@ data_list = df1.to_dict(orient="records")
 for item in data_list:
     try:
         #driver.get("https://release.gensom.sharajman.com/plant-management")
-        driver.get("https://refex.gensomerp.com/plant-management")
+        driver.get("https://refex.dev.gensomerp.com/plant-management")
         time.sleep(1)
         add_project_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@ngbtooltip='Add Project']")))
         add_project_button.click()
@@ -203,6 +203,23 @@ for item in data_list:
         time.sleep(2)
         driver.find_element(By.XPATH, "//button[text()=' Save ']").click()
         time.sleep(2)
+
+        site_person = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()='Site Person Details']")))
+        site_person.click()
+
+        add_person = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text() =' Add Person ']")))
+        add_person.click()
+
+        add_person_searchbox = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//input[@id='typeahead-format']")))
+        add_person_searchbox.send_keys("Ashish")
+        add_person_searchbox.send_keys(Keys.ENTER)
+
+        site_role = Select(driver.find_element(By.ID, "user_role"))
+        site_role.select_by_value("MANAGER")
+
+        add_site_person = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text() =' Add Site Person ']")))
+        add_site_person.click()
+
         
         #-------------------------------------Add Data Logger Details----------------------------------
 
@@ -234,7 +251,7 @@ for item in data_list:
         dev_num = random.randint(10000, 99999)
         driver.find_element(By.ID, "device_serial_no").send_keys(dev_num)
 
-        driver.find_element(By.ID, "folder_path_to_ftp").send_keys("D:\ftp\logger")
+        driver.find_element(By.ID, "folder_path_to_ftp").send_keys("D:\\ftp\\logger")
 
         wms = Select(driver.find_element(By.ID,"wms_available"))
         wms.select_by_visible_text("Yes")

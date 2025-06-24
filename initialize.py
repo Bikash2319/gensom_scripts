@@ -15,7 +15,7 @@ import math
  
 
 class init:   
-    def init_login():
+    def init_login(self):
         chrome_options = Options()
         service = Service(executable_path=r"C:\Users\Bikash Chandra Sahoo\AppData\Local\Programs\Python\Python313\Scripts\chromedriver.exe")
         driver = webdriver.Chrome(service=service, options=chrome_options)
@@ -24,7 +24,7 @@ class init:
         wait = WebDriverWait(driver, 10)
         return driver, wait
         
-    def release_login(driver, wait):
+    def release_login(self,driver, wait):
         driver.get("https://release.gensom.sharajman.com/login")
         driver.find_element(By.ID, "floatingInputValue").send_keys("bikash.sahoo@sharajman.com")
         driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
@@ -33,7 +33,7 @@ class init:
         wait.until(EC.url_to_be("https://release.gensom.sharajman.com/dash"))
            
     #Toaster        
-    def toaster(wait):
+    def toaster(self, wait):
         try:
             toaster = wait.until(EC.visibility_of_element_located((By.ID, "toast-container")))
             print(f" {toaster.text}")
@@ -47,7 +47,7 @@ class init:
         save_button.click()
         print("SAve button clicked")
         
-    def cancel(driver):
+    def cancel(self, driver):
         cancel_button = driver.find_element(By.XPATH, "//button[text()=' Cancel ' or text()='Cancel']")
         cancel_button.click()
         print("Cancel button clicked")

@@ -1,22 +1,31 @@
-from initialize import *
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service 
+from selenium.webdriver.chrome.options import Options 
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.keys import Keys
 import pandas as pd
 
 #setup
 chrome_options = Options()
-service = Service(executable_path=r"C:\Users\Bikash Chandra Sahoo\AppData\Local\Programs\Python\Python313\Scripts\chromedriver.exe")
+service = Service(executable_path=r"C:\\Program Files\\Python313\Scripts\\chromedriver.exe")
 driver = webdriver.Chrome(service=service, options=chrome_options)
 driver.maximize_window()
 driver.implicitly_wait(10)
 wait = WebDriverWait(driver, 10)
 
 #login
-driver.get("https://release.gensom.sharajman.com/login")
+driver.get("https://refex.dev.gensomerp.com")
 driver.find_element(By.ID, "floatingInputValue").send_keys("bikash.sahoo@sharajman.com")
 driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
 driver.find_element(By.XPATH, "//button[text()='Login ']").click()
 print("Login Successful")
-wait.until(EC.url_to_be("https://release.gensom.sharajman.com/dash"))
-driver.get("https://release.gensom.sharajman.com/plant-management")
+wait.until(EC.url_contains("dash"))
+driver.get("https://refex.dev.gensomerp.com/plant-management")
+
 
 # #Inject token for authentication
 # driver.get("https://refex.gensomerp.com/")
@@ -32,6 +41,7 @@ df = pd.read_excel(file_path, "Add Project", engine='openpyxl')
 # Convert to list of dictionaries
 data_list = df.to_dict(orient="records")
 
+
 for item in data_list:
     time.sleep(1)
     add_project_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@ngbtooltip='Add Project']")))
@@ -41,10 +51,10 @@ for item in data_list:
     #Basic details tab
     driver.find_element(By.XPATH, "//button[text()='Basic Details']")
     
-    plant_name = item.get("project_name").strip()
+    plant_name = item.get("project_name")
     driver.find_element(By.ID, "plant_name").send_keys(plant_name)
     
-    s_name = item.get("project_short_name").strip()
+    s_name = item.get("project_short_name")
     driver.find_element(By.ID, "short_name").send_keys(s_name)
     
     p_add = item.get("site_address")
@@ -55,6 +65,12 @@ for item in data_list:
     
     p_long = item.get("longitude")
     driver.find_element(By.ID, "longitude").send_keys(p_long)
+
+    cluster = Select(driver.find_element(By.ID, "cluster"))
+    cluster.select_by_visible_text("REIL")
+
+    company = Select(driver.find_element(By.ID, "company"))
+    company.select_by_visible_text("Refex")
 
     p_type = driver.find_element(By.ID, "domain")
     select_type = Select(p_type)
@@ -92,6 +108,12 @@ for item in data_list:
     w_name = item.get("warehouse")
     driver.find_element(By.ID, "warehouse").send_keys(w_name)
 
+    tarrif = item.get("tarrif")
+    driver.find_element(By.ID, "tariff").send_keys(tarrif)
+
+    data_frequency = Select(driver.find_element(By.ID, "data_frequency"))
+    data_frequency.select_by_visible_text("5 Minutes")
+
     # driver.find_element(By.ID, "is_wms_installed").click()
     # driver.find_element(By.ID, "is_smb_installed").click()
     
@@ -101,13 +123,13 @@ for item in data_list:
     end_time = item.get("end_time")
     driver.find_element(By.ID, "end_time").send_keys(end_time)
     
-    time.sleep(2)
+    time.sleep(200)
     
-    init.save(driver)
-    time.sleep(2)
-    driver.back()
-    # driver.find_element(By.XPATH("//button[text()= ' Cancel ']")).click()
-    print(f"{plant_name} is added")
+    # init.save(driver)
+    # time.sleep(2)
+    # driver.back()
+    # # driver.find_element(By.XPATH("//button[text()= ' Cancel ']")).click()
+    # print(f"{plant_name} is added")
     
     
     
