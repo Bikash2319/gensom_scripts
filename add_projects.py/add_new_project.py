@@ -8,6 +8,7 @@ management_menu = driver.find_element(By.XPATH, "//aside[1]//nav/ul/li/a/span[co
 
 make.add_make_button()
 category.add_new_category()
+print('test')
 
 
 
