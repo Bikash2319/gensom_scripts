@@ -5,29 +5,29 @@ import string
 
 #setup
 chrome_options = Options()
-service = Service(executable_path=r"C:\Users\Bikash Chandra Sahoo\AppData\Local\Programs\Python\Python313\Scripts\chromedriver.exe")
+service = Service(executable_path=r"C:\\Program Files\\Python\\Python313\\Scripts\\chromedriver.exe")
 driver = webdriver.Chrome(service=service, options=chrome_options)
 driver.maximize_window()
 driver.implicitly_wait(10)
 wait = WebDriverWait(driver, 10)
 
-driver.get("https://dev.gensom.sharajman.com/login")
-driver.find_element(By.ID, "floatingInputValue").send_keys("bikash.sahoo@sharajman.com")
-driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
-driver.find_element(By.XPATH, "//button[text()='Login ']").click()
-print("Login Successful")
-wait.until(EC.url_to_be("https://dev.gensom.sharajman.com/dash"))
-driver.get("https://dev.gensom.sharajman.com/inventory-managment")
-
-# #Inject token for authentication
-# driver.get("https://refex.gensomerp.com/")
-# token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQyOTk1NzM0fQ.eXcJN6NuQQ3xb922mMvYahm664HSHnP291vYmKYrKlE"
-# driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
+# driver.get("https://refex.dev.gensom.sharajman.com/login")
+# driver.find_element(By.ID, "floatingInputValue").send_keys("bikash.sahoo@sharajman.com")
+# driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
+# driver.find_element(By.XPATH, "//button[text()='Login ']").click()
 # print("Login Successful")
-# driver.get("https://refex.gensomerp.com/inventory-managment")
+# wait.until(EC.url_to_be("https://dev.gensom.sharajman.com/dash"))
+# driver.get("https://dev.gensom.sharajman.com/inventory-managment")
+
+#Inject token for authentication
+driver.get("https://refex.dev.gensomerp.com/")
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaWthc2guc2Fob29Ac2hhcmFqbWFuLmNvbSIsImxvZ2luX2lkIjoyNiwidXNlcl9pZCI6MzEsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzU3NjA1MzU3fQ.b-DRfBwJ2yN-461P93ebhORUNBY4SA9jhbGnTmdAXlw"
+driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
+print("Login Successful")
+driver.get("https://refex.dev.gensomerp.com/inventory-managment")
 
 #Read Excel sheet
-file_path = "D:\\GenSOM Variables\\GenSOM ERP Variables.xlsx"
+file_path = "C:\\Automation\\gensom_scripts\\GenSOM ERP Variables.xlsx"
 df = pd.read_excel(file_path, "Add Inventory", engine='openpyxl')
 
 # Convert to list of dictionaries
@@ -45,13 +45,17 @@ for item in data_list:
     make = item.get("make").strip()
     select_make = Select(driver.find_element(By.ID, "make_id"))
     select_make.select_by_visible_text(make)
+    time.sleep(1)
 
-    model = item.get("model_name").strip()
+    model = item.get("model_name")
+    model = model.strip()
     model_dropdown = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'ng-select-container')]")))
     model_dropdown.click()
+    time.sleep(0.5)
     model_option = driver.find_element(By.XPATH, f"//ng-dropdown-panel//div[contains(@class, 'ng-option') and span[text()='{model}']]")
+    time.sleep(0.5)
     model_option.click()
-    time.sleep(1)
+    time.sleep(0.5)
 
     subCategory_value = driver.find_element(By.ID, "sub_category_id")
     sub_category_field = subCategory_value.get_attribute("textContent").strip()
@@ -64,7 +68,7 @@ for item in data_list:
     dc_capacity = str(item.get("dc_capacity", "0"))
     inv_type = item.get("inv_type", "")
 
-    if sub_category_text.lower() == "inverters":
+    if sub_category_text.lower() in ["inverters", "inverter"]:
         time.sleep(1)
         wait.until(EC.element_to_be_clickable((By.ID, "ac_capacity"))).send_keys(ac_capacity)
         wait.until(EC.element_to_be_clickable((By.ID, "dc_capacity"))).send_keys(dc_capacity)
@@ -85,7 +89,7 @@ for item in data_list:
         print("Unknown sub-category. No fields filled.")
 
 
-    w_name = item.get("warehouse")
+    w_name = item.get("warehouse").strip()
     select_warehouse = Select(driver.find_element(By.ID, "warehouse_id"))
     for option in select_warehouse.options:
         if option.text.strip() == w_name:  
@@ -97,7 +101,7 @@ for item in data_list:
     driver.find_element(By.ID, "reorder_no").send_keys("1")
     driver.find_element(By.ID, "quantity").send_keys("1")
 
-    vendor = item.get("vendor")
+    vendor = item.get("vendor").strip()
     select_vendor = Select(driver.find_element(By.ID, "vendor_id"))
     for option in select_vendor.options:
         if option.text.strip() == vendor:  
@@ -109,6 +113,7 @@ for item in data_list:
     print(po_number)
 
     init.save(driver)
+    time.sleep(0.5)
 
     toaster = wait.until(EC.visibility_of_element_located((By.ID, "toast-container")))
     print(f"Toaster message: {toaster.text}")
