@@ -8,7 +8,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 
 options = Options()
-service = Service(executable_path=r"C:\\Program Files\\Python\\Python313\\Scripts\\chromedriver.exe")
+service = Service(executable_path=r"C:\\Program Files\\Python\\Scripts\\chromedriver.exe")
 driver = webdriver.Chrome(service=service, options=options)
 driver.maximize_window()
 wait = WebDriverWait(driver, 10)

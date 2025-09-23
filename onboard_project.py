@@ -2,16 +2,17 @@ from initialize import *
 import random
 import string
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
 
 #setup
 chrome_options = Options()
-service = Service(executable_path=r"C:\\Program Files\\Python313\Scripts\\chromedriver.exe")
+service = Service(executable_path=r"C:\\Program Files\\Python\\Scripts\\chromedriver.exe")
 driver = webdriver.Chrome(service=service, options=chrome_options)
 driver.maximize_window()
 driver.implicitly_wait(10)
 wait = WebDriverWait(driver, 10)
-file_path = "D:\\GenSOM Variables\\GenSOM ERP Variables.xlsx"
+file_path = "C:\\Automation\\gensom_scripts\\GenSOM ERP Variables.xlsx"
 
 
 # #login
@@ -25,11 +26,11 @@ file_path = "D:\\GenSOM Variables\\GenSOM ERP Variables.xlsx"
 
 
 #Inject token for authentication
-driver.get("https://refex.dev.gensomerp.com/login")
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhc2hpc2gua0BzaGFyYWptYW4uY29tIiwibG9naW5faWQiOjMsInVzZXJfaWQiOjMsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzQ4OTgwMjk2fQ.Y-9Vpf1f4jbdnrfue21sv2Q-83QtA2pUJdBvFOSrSzI"
+driver.get("https://refex.gensomerp.com/login")
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaWthc2guc2Fob29Ac2hhcmFqbWFuLmNvbSIsImxvZ2luX2lkIjoyNiwidXNlcl9pZCI6MzEsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzU3NjkxNDQ4fQ.wzCr60d-zw_TSgnblXylF6ewRByoW8pfChFGObqpYbE"
 driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
 print("Login Successful")
-driver.get("https://refex.dev.gensomerp.com/inventory-managment")
+driver.get("https://refex.gensomerp.com/inventory-managment")
 
 
 df2 = pd.read_excel(file_path, "Add Inventory")
@@ -37,7 +38,6 @@ df2 = pd.read_excel(file_path, "Add Inventory")
 data_list = df2.to_dict(orient="records")
 
 for item in data_list:
-      
     time.sleep(1)
     add_inventory_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@ngbtooltip='Add Inventory']")))
     add_inventory_button.click()
@@ -49,13 +49,17 @@ for item in data_list:
     make = item.get("make").strip()
     select_make = Select(driver.find_element(By.ID, "make_id"))
     select_make.select_by_visible_text(make)
+    time.sleep(1)
 
     model = item.get("model_name")
+    model = model.strip()
     model_dropdown = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'ng-select-container')]")))
     model_dropdown.click()
+    time.sleep(0.5)
     model_option = driver.find_element(By.XPATH, f"//ng-dropdown-panel//div[contains(@class, 'ng-option') and span[text()='{model}']]")
+    time.sleep(0.5)
     model_option.click()
-    time.sleep(1)
+    time.sleep(0.5)
 
     subCategory_value = driver.find_element(By.ID, "sub_category_id")
     sub_category_field = subCategory_value.get_attribute("textContent").strip()
@@ -119,110 +123,123 @@ for item in data_list:
     print(f"Toaster message: {toaster.text}")
     toaster.click()
     if toaster.text.strip() == 'This Inventory already exists':
-        init.cancel(driver)
+        init.cancel(driver)   
     
 
+# #Read Excel sheet
+# df1 = pd.read_excel(file_path, "Add Project")
 
-#Read Excel sheet
-df1 = pd.read_excel(file_path, "Add Project")
+# # Convert to list of dictionaries
+# data_list = df1.to_dict(orient="records")
 
-# Convert to list of dictionaries
-data_list = df1.to_dict(orient="records")
-
-for item in data_list:
+# for item in data_list:
     try:
-        #driver.get("https://release.gensom.sharajman.com/plant-management")
-        driver.get("https://refex.dev.gensomerp.com/plant-management")
-        time.sleep(1)
-        add_project_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@ngbtooltip='Add Project']")))
-        add_project_button.click()
-        print("Add project button clicked")
+#         #driver.get("https://release.gensom.sharajman.com/plant-management")
+#         driver.get("https://refex.dev.gensomerp.com/plant-management")
+#         time.sleep(1)
+#         add_project_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@ngbtooltip='Add Project']")))
+#         add_project_button.click()
+#         print("Add project button clicked")
 
-        #Basic details tab
-        driver.find_element(By.XPATH, "//button[text()='Basic Details']")
+#         #Basic details tab
+#         driver.find_element(By.XPATH, "//button[text()='Basic Details']")
         
-        plant_name = item.get("project_name").strip()
-        driver.find_element(By.ID, "plant_name").send_keys(plant_name)
+#         plant_name = item.get("project_name").strip()
+#         driver.find_element(By.ID, "plant_name").send_keys(plant_name)
         
-        s_name = item.get("project_short_name").strip()
-        driver.find_element(By.ID, "short_name").send_keys(s_name)
+#         project_id = item.get("projet_id").strip()
+#         driver.find_element(By.ID, "plant_code").send_keys(project_id)
         
-        p_add = item.get("site_address")
-        driver.find_element(By.ID, "site_address").send_keys(p_add)
+#         s_name = item.get("project_short_name").strip()
+#         driver.find_element(By.ID, "short_name").send_keys(s_name)
         
-        p_lat = item.get("latitude")
-        driver.find_element(By.ID, "latitude").send_keys(p_lat)
+#         p_add = item.get("site_address")
+#         driver.find_element(By.ID, "site_address").send_keys(p_add)
         
-        p_long = item.get("longitude")
-        driver.find_element(By.ID, "longitude").send_keys(p_long)
-
-        p_type = driver.find_element(By.ID, "domain")
-        select_type = Select(p_type)
-        select_type.select_by_visible_text("Solar Management System")
-
-        time.sleep(1)
-        select_subtype = Select(driver.find_element(By.ID, "subdomain"))
-        select_subtype.select_by_value("SOLAR_POWER_STORAGE")
-
-        time.sleep(1)
-        select_techno = Select(driver.find_element(By.ID, "technology_type"))
-        select_techno.select_by_value("MONOCRYSTALLINE")
-
-        time.sleep(1)
-        i_type = item.get("installation_type")
-        select_install = Select(driver.find_element(By.ID, "installation_type"))
-        select_install.select_by_value(i_type)
-
-        time.sleep(1)
-        select_mount = Select(driver.find_element(By.ID, "mounting_type"))
-        select_mount.select_by_value("FIXED TILT")
-
-        tilt = item.get("tilt")
-        driver.find_element(By.ID, "tilt_azimuth").send_keys(tilt)
+#         p_lat = item.get("latitude")
+#         driver.find_element(By.ID, "latitude").send_keys(p_lat)
         
-        dc_cap = item.get("dc_capacity")
-        driver.find_element(By.ID, "dc_capacity").send_keys(dc_cap)
+#         p_long = item.get("longitude")
+#         driver.find_element(By.ID, "longitude").send_keys(p_long)
+
+#         p_type = driver.find_element(By.ID, "domain")
+#         select_type = Select(p_type)
+#         select_type.select_by_visible_text("Solar Management System")
+
+#         time.sleep(1)
+#         select_subtype = Select(driver.find_element(By.ID, "subdomain"))
+#         select_subtype.select_by_value("SOLAR_POWER_STORAGE")
+
+#         time.sleep(1)
+#         select_techno = Select(driver.find_element(By.ID, "technology_type"))
+#         select_techno.select_by_value("MONOCRYSTALLINE")
+
+#         time.sleep(1)
+#         i_type = item.get("installation_type")
+#         select_install = Select(driver.find_element(By.ID, "installation_type"))
+#         select_install.select_by_value(i_type)
+
+#         time.sleep(1)
+#         select_mount = Select(driver.find_element(By.ID, "mounting_type"))
+#         select_mount.select_by_value("FIXED TILT")
+
+#         tilt = item.get("tilt")
+#         driver.find_element(By.ID, "tilt_azimuth").send_keys(tilt)
         
-        ac_cap = item.get("ac_capacity")
-        driver.find_element(By.ID, "ac_capacity").send_keys(ac_cap)
-
-        #comm_date = item.get("commissioning_date")
-        driver.find_element(By.ID, "commissioning_date").send_keys("03/03/2025")
+#         dc_cap = item.get("dc_capacity")
+#         driver.find_element(By.ID, "dc_capacity").send_keys(dc_cap)
         
-        w_name = item.get("warehouse")
-        driver.find_element(By.ID, "warehouse").send_keys(w_name)
+#         ac_cap = item.get("ac_capacity")
+#         driver.find_element(By.ID, "ac_capacity").send_keys(ac_cap)
 
-        # driver.find_element(By.ID, "is_wms_installed").click()
-        # driver.find_element(By.ID, "is_smb_installed").click()
+#         #comm_date = item.get("commissioning_date")
+#         driver.find_element(By.ID, "commissioning_date").send_keys("2025-05-23")
         
-        start_time = item.get("start_time")
-        driver.find_element(By.ID, "start_time").send_keys(start_time)
+#         w_name = item.get("warehouse")
+#         driver.find_element(By.ID, "warehouse").send_keys(w_name)
         
-        end_time = item.get("end_time")
-        driver.find_element(By.ID, "end_time").send_keys(end_time)
-        time.sleep(2)
-        driver.find_element(By.XPATH, "//button[text()=' Save ']").click()
-        time.sleep(2)
+#         tarrif = item.get("tarrif").strip()
+#         driver.find_element(By.ID, "tariff").send_keys(tarrif)
 
-        site_person = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()='Site Person Details']")))
-        site_person.click()
+#         # driver.find_element(By.ID, "is_wms_installed").click()
+#         # driver.find_element(By.ID, "is_smb_installed").click()
+        
+#         start_time = item.get("start_time")
+#         driver.find_element(By.ID, "start_time").send_keys(start_time)
+        
+#         end_time = item.get("end_time")
+#         driver.find_element(By.ID, "end_time").send_keys(end_time)
+#         time.sleep(2)
+#         driver.find_element(By.XPATH, "//button[text()=' Save ']").click()
+#         time.sleep(2)
 
-        add_person = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text() =' Add Person ']")))
-        add_person.click()
+#         site_person = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()='Site Person Details']")))
+#         site_person.click()
 
-        add_person_searchbox = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//input[@id='typeahead-format']")))
-        add_person_searchbox.send_keys("Ashish")
-        add_person_searchbox.send_keys(Keys.ENTER)
+#         add_person = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text() =' Add Person ']")))
+#         add_person.click()
 
-        site_role = Select(driver.find_element(By.ID, "user_role"))
-        site_role.select_by_value("MANAGER")
+#         add_person_searchbox = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//input[@id='typeahead-format']")))
+#         add_person_searchbox.send_keys("Ashish")
+#         add_person_searchbox.send_keys(Keys.ENTER)
 
-        add_site_person = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text() =' Add Site Person ']")))
-        add_site_person.click()
+#         site_role = Select(driver.find_element(By.ID, "user_role"))
+#         site_role.select_by_value("MANAGER")
+
+#         add_site_person = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text() =' Add Site Person ']")))
+#         add_site_person.click()
 
         
         #-------------------------------------Add Data Logger Details----------------------------------
-
+        time.sleep(0.5)
+        driver.get("https://refex.gensomerp.com/plant-management")
+        
+        searchbar = driver.find_element(By.XPATH, "//input[@placeholder='Search']")
+        searchbar.send_keys("IVL")
+        
+        edit = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//*[@id='main-wrapper']/div[1]/div/app-plant-list/div/div/div[2]/div[2]/table/tbody/tr/td[10]/a[2]")))
+        edit.click()
+        
         Logger = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//button[text()='Data Logger Details']")))
         Logger.click()
 
@@ -301,7 +318,6 @@ for item in data_list:
             installation_date.send_keys("01/01/2025")
             fetch = wait.until(EC.element_to_be_clickable(driver.find_element(By.XPATH, "//i[@class='fas fa-circle-notch']")))
             fetch.click()
-            
             
             data_logger_dd = Select(driver.find_element(By.ID, "data_logger_id"))
             data_logger_dd.select_by_visible_text("Logger 1")
