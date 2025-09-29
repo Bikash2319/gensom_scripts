@@ -1,10 +1,27 @@
 import os
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 
 # TOKEN = "C:\\Automation\\gensom_scripts\\login\\token.txt"
 TOKEN = r"C:\Automation\gensom_scripts\token.txt"
+
+
+def setup_driver():
+    
+    chrome_options = Options()
+    chrome_options.add_argument("--ignore-certificate-errors")
+    chrome_options.add_argument("--ignore-ssl-errors")
+    chrome_options.add_argument("--allow-insecure-localhost")
+    
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.maximize_window()
+    driver.implicitly_wait(10)
+    wait = WebDriverWait(driver, 10) 
+    return driver, wait
+    
 
 def read_token():
     if os.path.exists(TOKEN):
@@ -18,28 +35,28 @@ def save_token(token):
     with open(TOKEN, "w") as f:
         f.write(token)
 
-def login(driver, url):
-    driver.get(f"{url}/login")
+def login(driver, domain):
+    driver.get(f"{domain}/login")
 
     #login with token
     token = read_token()
     print(token)
     if token:
         driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
-        driver.get(f"{url}/dash")
+        driver.get(f"{domain}/dash")
         try:
-            WebDriverWait(driver, 10).until(EC.url_contains("dash"))
+            WebDriverWait(driver, 10).until(ec.domain_contains("dash"))
             print("Logged in with saved token")
             return
         except:
             print("Token expired or invalid, logging in with credentials...")
 
     #Login with credentials
-    driver.get(f"{url}/login")
-    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "floatingInputValue"))).send_keys("bikash.sahoo@sharajman.com")
+    driver.get(f"{domain}/login")
+    WebDriverWait(driver, 10).until(ec.visibility_of_element_located((By.ID, "floatingInputValue"))).send_keys("bikash.sahoo@sharajman.com")
     driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
     driver.find_element(By.XPATH, "//button[text()='Login ']").click()
-    WebDriverWait(driver, 10).until(EC.url_contains("dash"))
+    WebDriverWait(driver, 10).until(ec.domain_contains("dash"))
     print("Logged in with credentials")
 
     #Save new token
