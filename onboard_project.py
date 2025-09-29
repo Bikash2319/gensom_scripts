@@ -1,22 +1,23 @@
 from initialize import *
+from selenium import webdriver
 import random
 import string
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
-from login import login
-from login.driver_info import driver
-#setup
+from login_file import login
+
+
+# setup
 # chrome_options = Options()
 # service = Service(executable_path=r"C:\\Program Files\\Python\\Scripts\\chromedriver.exe")
 # driver = webdriver.Chrome(service=service, options=chrome_options)
+driver = webdriver.Chrome()
 driver.maximize_window()
 driver.implicitly_wait(10)
 wait = WebDriverWait(driver, 10)
 file_path = "C:\\Automation\\gensom_scripts\\GenSOM ERP Variables.xlsx"
 url = "https://refex.dev.gensomerp.com"
-token_data = login.log(driver, url)
-print(token_data)
 
 # #login
 # driver.get("https://release.gensom.sharajman.com/login")
@@ -35,7 +36,8 @@ print(token_data)
 # print("Login Successful")
 # driver.get(f"{url}/inventory-managment")
 
-
+# auto login function
+login(driver, url)
 
 df2 = pd.read_excel(file_path, "Add Inventory")
 # Convert to list of dictionaries
