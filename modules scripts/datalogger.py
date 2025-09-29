@@ -58,5 +58,4 @@ plant.select_by_visible_text("Yes")
 
 driver.find_element(By.XPATH, "//button[text()='Submit']").click()
 driver.find_element(By.XPATH("//button[text()= ' Cancel ']")).click()
-print(f"{plant_name} and data logger added")
 

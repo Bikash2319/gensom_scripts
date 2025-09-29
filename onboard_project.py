@@ -4,8 +4,8 @@ import string
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
-from configurations import login
-from driver_data import driver
+from login import login
+from login.driver_info import driver
 #setup
 # chrome_options = Options()
 # service = Service(executable_path=r"C:\\Program Files\\Python\\Scripts\\chromedriver.exe")
