@@ -17,7 +17,7 @@ driver.maximize_window()
 driver.implicitly_wait(10)
 wait = WebDriverWait(driver, 10)
 file_path = "C:\\Automation\\gensom_scripts\\GenSOM ERP Variables.xlsx"
-domain = "https://refex.dev.gensomerp.com"
+url = "https://refex.dev.gensomerp.com"
 
 # #login
 # driver.get("https://release.gensom.sharajman.com/login")
@@ -25,19 +25,19 @@ domain = "https://refex.dev.gensomerp.com"
 # driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
 # driver.find_element(By.XPATH, "//button[text()='Login ']").click()
 # print("Login Successful")
-# wait.until(EC.domain_to_be("https://release.gensom.sharajman.com/dash"))
+# wait.until(EC.url_to_be("https://release.gensom.sharajman.com/dash"))
 # driver.get("https://release.gensom.sharajman.com/inventory-managment")
 
 
 # #Inject token for authentication
-# driver.get(f"{domain}/login")
+# driver.get(f"{url}/login")
 # token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaWthc2guc2Fob29Ac2hhcmFqbWFuLmNvbSIsImxvZ2luX2lkIjoyNiwidXNlcl9pZCI6MzEsInVzZXJfdHlwZSI6Ik8mTSBURUFNIiwiZXhwIjoxNzU4OTA2Mzg0fQ.KcNkP7mVhXtpq_QeL_SFf_QnILuOKAuEZE3voEtQ2TE"
 # driver.execute_script(f"window.localStorage.setItem('token', '{token}');")
 # print("Login Successful")
-# driver.get(f"{domain}/inventory-managment")
+# driver.get(f"{url}/inventory-managment")
 
 # auto login function
-login(driver, domain)
+login(driver, url)
 
 df2 = pd.read_excel(file_path, "Add Inventory")
 # Convert to list of dictionaries
@@ -141,7 +141,7 @@ data_list = df1.to_dict(orient="records")
 for item in data_list:
     try:
         
-        driver.get(f"{domain}/plant-management")
+        driver.get(f"{url}/plant-management")
         time.sleep(1)
         add_project_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@ngbtooltip='Add Project']")))
         add_project_button.click()
@@ -238,7 +238,7 @@ for item in data_list:
         
         #-------------------------------------Add Data Logger Details----------------------------------
         # time.sleep(0.5)
-        # driver.get(f"{domain}/plant-management")
+        # driver.get(f"{url}/plant-management")
         
         # searchbar = driver.find_element(By.XPATH, "//input[@placeholder='Search']")
         # searchbar.send_keys("Avid")

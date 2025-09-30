@@ -1,4 +1,5 @@
 import os
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
@@ -12,6 +13,7 @@ TOKEN = r"C:\Automation\gensom_scripts\token.txt"
 def setup_driver():
     
     chrome_options = Options()
+    time.sleep(0.5)
     chrome_options.add_argument("--ignore-certificate-errors")
     chrome_options.add_argument("--ignore-ssl-errors")
     chrome_options.add_argument("--allow-insecure-localhost")
@@ -56,7 +58,7 @@ def login(driver, domain):
     WebDriverWait(driver, 10).until(ec.visibility_of_element_located((By.ID, "floatingInputValue"))).send_keys("bikash.sahoo@sharajman.com")
     driver.find_element(By.XPATH, "//input[@placeholder='Password']").send_keys("Admin@1234")
     driver.find_element(By.XPATH, "//button[text()='Login ']").click()
-    WebDriverWait(driver, 10).until(ec.domain_contains("dash"))
+    WebDriverWait(driver, 10).until(ec.url_contains("dash"))
     print("Logged in with credentials")
 
     #Save new token
