@@ -21,6 +21,17 @@ headers = {"Content-Type": "application/json"}
 #   "user_type": "O&M TEAM"
 # }
 
+def read_token():
+    if os.path.exists(token_file):
+        with open(token_file, "r") as f:
+            return f.read().strip()
+    else:
+        print("No token available.")     
+    return None
+  
+def save_token(token):
+    with open(token_file, "w") as f:
+        f.write(token)
 
 
 response = requests.post(url, json=payload, headers=headers)
@@ -31,5 +42,6 @@ if response.status_code == 200:
   output = response.json()
 
   token = output.get("access_token")
+  save_token(token)
   print(token)
 
