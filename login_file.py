@@ -14,9 +14,9 @@ def setup_driver():
     
     chrome_options = Options()
     time.sleep(0.5)
-    chrome_options.add_argument("--ignore-certificate-errors")
-    chrome_options.add_argument("--ignore-ssl-errors")
-    chrome_options.add_argument("--allow-insecure-localhost")
+    # chrome_options.add_argument("--ignore-certificate-errors")
+    # chrome_options.add_argument("--ignore-ssl-errors")
+    # chrome_options.add_argument("--allow-insecure-localhost")
     
     driver = webdriver.Chrome(options=chrome_options)
     driver.maximize_window()
