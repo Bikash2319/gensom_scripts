@@ -2,7 +2,6 @@ import requests
 from backend.Utils.token import get_token
 
 
-
 token = get_token()
 
 
